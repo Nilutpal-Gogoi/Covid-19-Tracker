@@ -6,14 +6,18 @@ import Table from "./components/Table"
 import './App.css';
 import { sortData } from "./util";
 import LineGraph from "./components/LineGraph";
+import "leaflet/dist/leaflet.css";
 
 function App() {
   const [countries, setCountries] = useState([]);
   const [country, setCountry] = useState("worldwide");
   const [countryInfo, setCountryInfo] = useState({});
   const [tableData, setTableData] = useState([])
+  const [mapCenter, setMapCenter] = useState({lat: 34.80746, lng: -40.4796});
+  const [mapZoom, setMapZoom] = useState(3);
+  const [mapCountries, setMapCountries] = useState([]);
 
-
+// This useEffect is written to give us the info regarding the no of cases in InfoBox when the app.js reloads i.e at the starting before clicking any country from dropdown option.
   useEffect(() => {
     fetch("https://disease.sh/v3/covid-19/all")
     .then(response => response.json())
@@ -22,7 +26,10 @@ function App() {
     });
   }, []);
 
+
+  // This useEffect hook is used to fetch the data from the API 
   useEffect(() => {
+    // This function fetches the data 
     const getCountriesData = async() => {
       await fetch ("https://disease.sh/v3/covid-19/countries")
       .then((response) => response.json())
@@ -34,6 +41,7 @@ function App() {
 
         const sortedData = sortData(data)
         setTableData(sortedData);
+        setMapCountries(data);
         setCountries(countries);
       })
     };
@@ -55,10 +63,11 @@ function App() {
 
       // All of the data ... from the country response
       setCountryInfo(data);
-    })
 
-    // https://disease.sh/v3/covid-19/all 
-    // https://disease.sh/v3/covid-19/countries/[COUNTRY_CODE]
+      // Now to center the country on the map when we click it from the dropdown
+      setMapCenter([data.countryInfo.lat, data.countryInfo.long])
+      setMapZoom(4);
+    });
   };
 
   
@@ -98,7 +107,7 @@ function App() {
         </div>
 
         {/* ---------------- Map ------------------------------ */}
-        <Map></Map>
+        <Map countries = {mapCountries} center ={mapCenter} zoom={mapZoom}></Map>
       </div>
       
     {/* ----------------------- Right Container ------------------------------- */}
