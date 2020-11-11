@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from "react";
 import { Line } from "react-chartjs-2";
 import numeral from "numeral";
 
@@ -26,7 +26,7 @@ const options = {
       {
         type: "time",
         time: {
-          format: "MM/DD/YY",
+          parser: "MM/DD/YY",
           tooltipFormat: "ll",
         },
       },
@@ -47,10 +47,10 @@ const options = {
   },
 };
 
-const buildChartData = (data, casesType="cases") => {
-  const chartData = [];
+const buildChartData = (data, casesType) => {
+  let chartData = [];
   let lastDataPoint;
-  for(let date in data.cases) {
+  for (let date in data.cases) {
     if (lastDataPoint) {
       let newDataPoint = {
         x: date,
@@ -63,40 +63,44 @@ const buildChartData = (data, casesType="cases") => {
   return chartData;
 };
 
-function LineGraph({ casesType = "cases"}) {
+export default function LineGraph({ casesType, ...props }) {
   const [data, setData] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
       await fetch("https://disease.sh/v3/covid-19/historical/all?lastdays=120")
-      .then(response => response.json())
-      .then((data) => {
-        const chartData = buildChartData(data, "cases");
-        setData(chartData);
-      });
-    } 
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          let chartData = buildChartData(data, casesType);
+          setData(chartData);
+          // buildChart(chartData);
+        });
+    };
     fetchData();
   }, [casesType]);
 
-
   return (
-    <div>
+    <div className={props.className}>
       {data?.length > 0 && (
-        <Line 
-          options = {options}
+        <Line
           data={{
             datasets: [
               {
-                background :"rgba(204, 16, 52, 0.5)",
+                backgroundColor: "rgba(204, 16, 52, 0.5)",
                 borderColor: "#CC1034",
                 data: data,
               },
             ],
           }}
+          options={options}
         />
-      )}
+      )
+      }
     </div>
   );
 }
 
-export default LineGraph
+
+
