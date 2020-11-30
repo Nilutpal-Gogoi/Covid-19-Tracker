@@ -4,6 +4,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 This project is deployed using Netlify. [Click Here For Live Demo](https://nilutpal-covid-19-trackerapp.netlify.app/).
 
+(https://photos.app.goo.gl/8HDM21ShdUDnd6796)
+
 ## Available Scripts
 
 In the project directory, you can run:
