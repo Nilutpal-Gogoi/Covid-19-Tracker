@@ -2,6 +2,9 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+This project is deployed using Netlify. [Click Here For Live Demo](https://nilutpal-covid-19-trackerapp.netlify.app/).
+
+
 ## Available Scripts
 
 In the project directory, you can run:
