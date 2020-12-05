@@ -66,7 +66,7 @@ function App() {
       setCountryInfo(data);
 
       // Now to center the country on the map when we click it from the dropdown
-      setMapCenter([data.countryInfo.lat, data.countryInfo.long])
+      setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
       setMapZoom(4);
     });
   };
